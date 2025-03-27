@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,13 +10,94 @@
   <link rel="stylesheet" href="./css/style.css">
   <title>Document</title>
 </head>
+
 <body>
   <div class="wrapper" id="wrapper">
     <button type="button" class="btn search-btn" id="pokemon_search">ポケモンを探す</button>
   </div>
   <script src="../../common/js/jquery.js"></script>
   <script>
+
+    let pokeNum = Math.floor(Math.random() * 152) + 1;
+    let buttonId = $('button.btn search-btn').attr('id');
+    let searchHtml = `<button type="button" class="btn search-btn" id="pokemon_search">ポケモンを探す</button>`;
+    let failHtml =
+      `
+    <p class="text">逃げられてしまった...</p>
+    <button class="btn mt" data-js="reset">戻る</button>
+  `;
+
+    $('div').on('click', '#pokemon_search', enCountPokemon);
+
+    function enCountPokemon() {
+      $.ajax({
+        url: 'https://pokeapi.co/api/v2/pokemon/' + pokeNum,
+        method: 'GET'
+      }).done(function (res) {
+        let enCountHtml = `
+        <p class="name"></p>
+        <div>
+          <img class="img" src="${res.sprites.front_default}" alt="">
+        </div>
+        <div>
+          <button class="btn" id="catch">捕まえる</button>
+          <button class="btn" data-js="reset">逃げる</button>
+        </div>
+        `;
+        $.ajax({
+          url: res.species.url,
+          method: 'GET'
+        }).done(function (res) {
+          $('p.name').html(res.names[0].name);
+        }).fail(function (err) {
+        });
+        $('.wrapper').html(enCountHtml);
+        $('button').on('click', searchOrCatch);
+      }).fail(function (err) {
+      });
+    };
+
+    function searchOrCatch() {
+      let btnData = $(this).data('js');
+      if (btnData === 'reset') {
+        searchPokemon();
+      } else {
+        catchPokemon();
+      }
+    };
+
+    function searchPokemon() {
+      pokeNum = Math.floor(Math.random() * 152) + 1;
+      $('.wrapper').html(searchHtml);
+    };
+
+    function catchPokemon() {
+      let randCatch = Math.floor(Math.random() * 2);
+      if (randCatch === 0) {
+        $('.wrapper').html(failHtml);
+        $('button').click(searchPokemon);
+      } else {
+        $.ajax({
+          url: 'https://pokeapi.co/api/v2/item/4',
+          method: 'GET'
+        }).done(function (res) {
+          let doneHtml =
+            `
+          <p class="name">ゲットしました</p>
+          <div>
+            <img class="img" src="${res.sprites.default}" alt="">
+          </div>
+          <button class="btn" data-js="reset">戻る</button>
+          `;
+          $('.wrapper').html(doneHtml);
+          $('button').click(searchPokemon);
+        }).fail(function (err) {
+        });
+      };
+    };
+
     // 回答はここに書いてね
   </script>
 </body>
+
 </html>
