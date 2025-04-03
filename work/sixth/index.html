@@ -19,31 +19,33 @@
   <script>
 
     let pokeNum = Math.floor(Math.random() * 152) + 1;
-    let buttonId = $('button.btn search-btn').attr('id');
     let searchHtml = `<button type="button" class="btn search-btn" id="pokemon_search">ポケモンを探す</button>`;
     let failHtml =
       `
-    <p class="text">逃げられてしまった...</p>
-    <button class="btn mt" data-js="reset">戻る</button>
-  `;
+        <p class="text">逃げられてしまった...</p>
+        <button class="btn mt" data-js="reset">戻る</button>
+      `;
 
-    $('div').on('click', '#pokemon_search', enCountPokemon);
+    $('div').on('click', '#pokemon_search', encountPokemon);
 
-    function enCountPokemon() {
+    function encountPokemon() {
       $.ajax({
         url: 'https://pokeapi.co/api/v2/pokemon/' + pokeNum,
         method: 'GET'
       }).done(function (res) {
-        let enCountHtml = `
-        <p class="name"></p>
-        <div>
-          <img class="img" src="${res.sprites.front_default}" alt="">
-        </div>
-        <div>
-          <button class="btn" id="catch">捕まえる</button>
-          <button class="btn" data-js="reset">逃げる</button>
-        </div>
-        `;
+        let encountHtml =
+      `
+      <p class="name"></p>
+      <div>
+        <img class="img" src="${res.sprites.front_default}" alt="">
+      </div>
+      <div>
+        <button class="btn catch" id="catch">捕まえる</button>
+        <button class="btn reset" data-js="reset">逃げる</button>
+      </div>
+      `;
+        $('.wrapper').html(encountHtml);
+        $('.catch, .reset' ).on('click', searchOrCatch);
         $.ajax({
           url: res.species.url,
           method: 'GET'
@@ -51,8 +53,6 @@
           $('p.name').html(res.names[0].name);
         }).fail(function (err) {
         });
-        $('.wrapper').html(enCountHtml);
-        $('button').on('click', searchOrCatch);
       }).fail(function (err) {
       });
     };
