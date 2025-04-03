@@ -35,14 +35,14 @@
       }).done(function (res) {
         let encountHtml =
       `
-      <p class="name"></p>
-      <div>
-        <img class="img" src="${res.sprites.front_default}" alt="">
-      </div>
-      <div>
-        <button class="btn catch" id="catch">捕まえる</button>
-        <button class="btn reset" data-js="reset">逃げる</button>
-      </div>
+        <p class="name"></p>
+        <div>
+          <img class="img" src="${res.sprites.front_default}" alt="">
+        </div>
+        <div>
+          <button class="btn catch" id="catch">捕まえる</button>
+          <button class="btn reset" data-js="reset">逃げる</button>
+        </div>
       `;
         $('.wrapper').html(encountHtml);
         $('.catch, .reset' ).on('click', searchOrCatch);
