@@ -22,8 +22,8 @@
     <script src="../../common/js/jquery.js"></script>
     <script>
 
-      $('.modal-show').on('click', modalFadeIn);
-      $('.modal-close').on('click', modalFadeOut);
+      $('.modal-show').click(modalFadeIn);
+      $('.modal-close').click(modalFadeOut);
 
       function modalFadeIn(){
         $('.modal').fadeIn(1000);
