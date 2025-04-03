@@ -89,14 +89,14 @@
 
       function narrowDown(){
 
-        var category = $(this).val();
+        var selectedCategory = $(this).val();
         $('li').each(function(index, element){
 
-          var dataType = $(element).data('category-type');
+          var category = $(element).data('category-type');
 
-          if(category === 'all'){
+          if(selectedCategory === 'all'){
             $(element).show();
-          }else if(category === dataType){
+          }else if(selectedCategory === category){
             $(element).show();
           }else{
             $(element).hide();
