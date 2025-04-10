@@ -84,6 +84,27 @@
     </div>
     <script src="../../common/js/jquery.js"></script>
     <script>
+
+      $('select').change(narrowDown);
+
+      function narrowDown(){
+
+        var selectedCategory = $(this).val();
+        $('li').each(function(index, element){
+
+          var category = $(element).data('category-type');
+
+          if(selectedCategory === 'all'){
+            $(element).show();
+          }else if(selectedCategory === category){
+            $(element).show();
+          }else{
+            $(element).hide();
+          };
+
+        });
+      }
+
       // 今回やるのはフィルタリング機能です。
       // selectボックスをクリックして言語を選び、その言語と関係のあるリストだけが表示されるプログラムです。
       // [処理の流れ]

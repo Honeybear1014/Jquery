@@ -47,6 +47,20 @@
     </div>
     <script src="../../common/js/jquery.js"></script>
     <script>
+
+      $("li").hover(slideDown, SlideUp);
+
+      function slideDown(){
+        $(this).children('ul').stop(true, false).slideDown();
+      }
+
+      function SlideUp(){
+
+        $(this).children('ul').stop(true, false).slideUp();
+
+      }
+
+
       // 今回やるのはドロップメニューです。
       // メニューをhoverすると隠れている中のメニューが表示され、メニューから離れると中のメニューが非表示されるプログラムです。
       // 処理は関数化し、hoverしたら用意した関数を呼び出すようにしてください。
