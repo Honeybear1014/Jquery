@@ -18,7 +18,6 @@
   <script src="../../common/js/jquery.js"></script>
   <script>
 
-    let pokeNum = Math.floor(Math.random() * 152) + 1;
     let searchHtml = `<button type="button" class="btn search-btn" id="pokemon_search">ポケモンを探す</button>`;
     let failHtml =
       `
@@ -26,9 +25,12 @@
         <button class="btn mt" data-js="reset">戻る</button>
       `;
 
-    $('div').on('click', '#pokemon_search', encountPokemon);
+    $(document).on('click', '#pokemon_search', encountPokemon);
+    $(document).on('click', '.catch', catchPokemon);
+    $(document).on('click', '[data-js="reset"]',backToSearchHtml );
 
     function encountPokemon() {
+      let pokeNum = Math.floor(Math.random() * 152) + 1;
       $.ajax({
         url: 'https://pokeapi.co/api/v2/pokemon/' + pokeNum,
         method: 'GET'
@@ -45,7 +47,6 @@
         </div>
       `;
         $('.wrapper').html(encountHtml);
-        $('.catch, .reset' ).on('click', searchOrCatch);
         $.ajax({
           url: res.species.url,
           method: 'GET'
@@ -57,25 +58,10 @@
       });
     };
 
-    function searchOrCatch() {
-      let btnData = $(this).data('js');
-      if (btnData === 'reset') {
-        searchPokemon();
-      } else {
-        catchPokemon();
-      }
-    };
-
-    function searchPokemon() {
-      pokeNum = Math.floor(Math.random() * 152) + 1;
-      $('.wrapper').html(searchHtml);
-    };
-
     function catchPokemon() {
       let randCatch = Math.floor(Math.random() * 2);
       if (randCatch === 0) {
         $('.wrapper').html(failHtml);
-        $('button').click(searchPokemon);
       } else {
         $.ajax({
           url: 'https://pokeapi.co/api/v2/item/4',
@@ -90,11 +76,14 @@
           <button class="btn" data-js="reset">戻る</button>
           `;
           $('.wrapper').html(doneHtml);
-          $('button').click(searchPokemon);
         }).fail(function (err) {
         });
       };
     };
+
+    function backToSearchHtml(){
+      $('.wrapper').html(searchHtml);
+    }
 
     // 回答はここに書いてね
   </script>
